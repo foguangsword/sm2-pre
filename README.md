@@ -2,8 +2,6 @@
 
 **Proxy Re-Encryption based on Chinese National Cryptographic Standard SM2**
 
-[中文](https://claude.ai/chat/e0e4b46e-e8dd-40c7-a6b2-6f23ab19488f#中文) | [English](https://claude.ai/chat/e0e4b46e-e8dd-40c7-a6b2-6f23ab19488f#english)
-
 ------
 
 ## 中文
