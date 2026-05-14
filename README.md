@@ -127,11 +127,11 @@ mvn exec:java -Dexec.mainClass="org.example.Test"
 
 本项目以下几点在生产场景中需要进一步处理：
 
-| 问题                   | 说明                                                   |
-| ---------------------- | ------------------------------------------------------ |
-| 无 C3/C4 完整性校验    | 当前实现省略了密文完整性验证字段，生产环境应补充       |
-| `α` 授权参数为简化实现 | 当前为占位符，完整方案应使用 `Sign_skA(pkB ‖ orderId)` |
-| 不支持变长明文         | 设计上仅用于固定长度对称密钥的安全传输                 |
+| 问题                       | 说明                                                       |
+| -------------------------- | ---------------------------------------------------------- |
+| ~~无 C3/C4 完整性校验~~    | ~~当前实现省略了密文完整性验证字段，生产环境应补充~~       |
+| ~~`α` 授权参数为简化实现~~ | ~~当前为占位符，完整方案应使用 `Sign_skA(pkB ‖ orderId)`~~ |
+| 不支持变长明文             | 设计上仅用于固定长度对称密钥的安全传输                     |
 
 ------
 
@@ -228,11 +228,11 @@ mvn exec:java -Dexec.mainClass="org.example.Test"
 
 ### Known Limitations
 
-| Issue                       | Note                                                         |
-| --------------------------- | ------------------------------------------------------------ |
-| No C3/C4 integrity check    | Omitted for simplicity; should be added for production use   |
-| `α` is a placeholder        | Full scheme requires `Sign_skA(pkB ‖ orderId)`               |
-| Fixed-length plaintext only | Designed for symmetric key transport, not arbitrary messages |
+| Issue                        | Note                                                         |
+| ---------------------------- | ------------------------------------------------------------ |
+| ~~No C3/C4 integrity check~~ | ~~Omitted for simplicity; should be added for production use~~ |
+| ~~`α` is a placeholder~~     | ~~Full scheme requires `Sign_skA(pkB ‖ orderId)`~~           |
+| Fixed-length plaintext only  | Designed for symmetric key transport, not arbitrary messages |
 
 ------
 
