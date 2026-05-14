@@ -5,6 +5,8 @@ import cn.hutool.core.util.HexUtil;
 import cn.hutool.crypto.SmUtil;
 import cn.hutool.crypto.symmetric.SM4;
 import lombok.extern.slf4j.Slf4j;
+import org.bouncycastle.util.BigIntegers;
+
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Map;
@@ -37,12 +39,12 @@ public class Test {
         //2、sender生成重加密密钥, 给到服务端
         String orderID = "423549003"; //订单号
         //BigInteger rkAB = sender.generateReKey(receiver.getPk(), orderID);
-        Map map = sender.generateReKey(receiver.getPk(), orderID);
+        Map map = sender.generateReKey(receiver.getPk(), orderID );
         BigInteger rkAB = (BigInteger)map.get("rkAB");
         Claim claim = (Claim)map.get("Claim");
         proxy.setRk(rkAB);
         proxy.setClaim(claim);
-        log.info("重加密密钥rk：{}", HexUtil.encodeHexStr(rkAB.toByteArray()));
+        log.info("重加密密钥rk：{}", HexUtil.encodeHexStr(BigIntegers.asUnsignedByteArray(32, rkAB)));
 
         //3、proxy二重加密
         proxy.reEnCapsulate();

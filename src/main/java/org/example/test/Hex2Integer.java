@@ -23,7 +23,7 @@ public class Hex2Integer {
     }
 
     public static BigInteger hex2int(String hex){
-       // byte[] bytes = HexUtil.decodeHex(hex);
-        return new BigInteger(hex, 16);
+        byte[] bytes = HexUtil.decodeHex(hex);
+        return new BigInteger(1, bytes);
     }
 }

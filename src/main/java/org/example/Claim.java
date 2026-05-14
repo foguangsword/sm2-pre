@@ -20,8 +20,6 @@ public class Claim {
         this.issuer = issuer;
     }
 
-
-
     public String getOrderID() {
         return orderID;
     }
@@ -47,6 +45,6 @@ public class Claim {
     }
 
     public String toString() {
-        return JSONUtil.toJsonStr(this);
+        return this.orderID + this.timestamp + this.issuer + this.sign;
     }
 }
