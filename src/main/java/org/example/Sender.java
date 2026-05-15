@@ -52,12 +52,12 @@ public class Sender {
         String tHex = SmUtil.sm3(HexUtil.encodeHexStr(rpkA.getEncoded(false))); // t = H1(rpkA)
         log.debug("t = H1(r*pkA) : " + tHex);
         //src 16字节，而HexUtil.decodeHex(tHex)是sm3解码后是32字节，所以需要对齐
-        /*byte[] tBytes = HexUtil.decodeHex(tHex);
+        byte[] tBytes = HexUtil.decodeHex(tHex);
         byte[] tTruncated = Arrays.copyOf(tBytes, src.length); // 取前 16 字节
-        BigInteger C2 = new BigInteger(1, src).xor(new BigInteger(1, tTruncated));*/
+        BigInteger C2 = new BigInteger(1, src).xor(new BigInteger(1, tTruncated));  //C2 16字节
 
-        BigInteger C2 = new BigInteger(1, src).xor(new BigInteger(1, HexUtil.decodeHex(tHex))); // C2 = M xor t
-        log.debug("C2 = M xor t : {}", HexUtil.encodeHexStr(BigIntegers.asUnsignedByteArray(32, C2)));
+        //BigInteger C2 = new BigInteger(1, src).xor(new BigInteger(1, HexUtil.decodeHex(tHex))); // C2 = M xor t
+        log.debug("C2 = M xor t : {}", HexUtil.encodeHexStr(BigIntegers.asUnsignedByteArray(16, C2)));
         String h1_xA_M_yA = SmUtil.sm3( HexUtil.encodeHexStr(rpkA.getXCoord().getEncoded())
                 + HexUtil.encodeHexStr(src)
                 + HexUtil.encodeHexStr(rpkA.getYCoord().getEncoded()) );
@@ -82,8 +82,11 @@ public class Sender {
         log.debug("r*pkA = (xA, yA) : {}", HexUtil.encodeHexStr(S.getEncoded(false)));
         //byte[] tmp = ArrayUtil.addAll(S.getXCoord().getEncoded(), S.getYCoord().getEncoded()); // xA||yA
         String tHex2 = SmUtil.sm3(HexUtil.encodeHexStr(S.getEncoded(false)));
-        log.debug("t = H1(skA*C1) : {}", tHex2);
-        BigInteger M = C2.xor( new BigInteger(1, HexUtil.decodeHex(tHex2)) );
+        byte[] tBytes = HexUtil.decodeHex(tHex2);
+        byte[] tTruncated = Arrays.copyOf(tBytes, 16);
+
+        log.debug("t = H1(skA*C1) : {}", HexUtil.encodeHexStr(tTruncated));
+        BigInteger M = C2.xor( new BigInteger(1, tTruncated) );
         return BigIntegers.asUnsignedByteArray(16, M);
     }
 
@@ -107,9 +110,13 @@ public class Sender {
         claim.setIssuer(HexUtil.encodeHexStr(pk.getEncoded(false)));
         String h1_rpkA = SmUtil.sm3(HexUtil.encodeHexStr(rpkA.getEncoded(false))); // t = H1(rpkA)
         String h1_rpkB = SmUtil.sm3(HexUtil.encodeHexStr(rpkB.getEncoded(false)) + claim.toString()); //H1(rpkB || alpha)
+        byte[] tBytes = HexUtil.decodeHex(h1_rpkA);
+        byte[] tTruncated_h1rpkA = Arrays.copyOf(tBytes, 16);
+        tBytes = HexUtil.decodeHex(h1_rpkB);
+        byte[] tTruncated_h1rpkB = Arrays.copyOf(tBytes, 16);
+
         //rkAB = H1(rpkA) xor H1(rpkB||alpha)
-        BigInteger rkAB = (new BigInteger(1, HexUtil.decodeHex(h1_rpkA)))
-                            .xor( new BigInteger(1, HexUtil.decodeHex(h1_rpkB)) );
+        BigInteger rkAB = (new BigInteger(1, tTruncated_h1rpkA)).xor( new BigInteger(1, tTruncated_h1rpkB) );
         Map map = new HashMap<>();
         map.put("rkAB", rkAB);
         map.put("Claim", claim);

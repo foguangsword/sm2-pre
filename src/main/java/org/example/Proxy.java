@@ -54,7 +54,7 @@ public class Proxy {
         BigInteger C2s = rk.xor(C2); //C2' = rkAB xor C2
         BigInteger C3s = capsule.getC3();
         BigInteger C4s = capsule.getC4();
-        log.debug("C2' : {}" , HexUtil.encodeHexStr(BigIntegers.asUnsignedByteArray(32, C2s)));
+        log.debug("C2' : {}" , HexUtil.encodeHexStr(BigIntegers.asUnsignedByteArray(16, C2s)));
         reCapsule = new Capsule(C1s, C2s, C3s, C4s);
         log.info("二重加密Capsule : {}", reCapsule);
     }

@@ -49,12 +49,16 @@ public class SM2Curve {
         this.ecc_gx = new BigInteger(ecc_param[4], 16);
         this.ecc_gy = new BigInteger(ecc_param[5], 16);
 
-        this.ecc_gx_fieldelement = new ECFieldElement.Fp(this.ecc_p, this.ecc_gx);
+       /* this.ecc_gx_fieldelement = new ECFieldElement.Fp(this.ecc_p, this.ecc_gx);
         this.ecc_gy_fieldelement = new ECFieldElement.Fp(this.ecc_p, this.ecc_gy);
 
         this.ecc_curve = new ECCurve.Fp(this.ecc_p, this.ecc_a, this.ecc_b);
         this.ecc_point_g = new ECPoint.Fp(this.ecc_curve, this.ecc_gx_fieldelement, this.ecc_gy_fieldelement, false);
-
+        */
+        this.ecc_curve = new ECCurve.Fp(this.ecc_p, this.ecc_a, this.ecc_b);
+        this.ecc_gx_fieldelement = this.ecc_curve.fromBigInteger(this.ecc_gx);
+        this.ecc_gy_fieldelement = this.ecc_curve.fromBigInteger(this.ecc_gy);
+        this.ecc_point_g = this.ecc_curve.createPoint(this.ecc_gx, this.ecc_gy);
         this.ecc_bc_spec = new ECDomainParameters(this.ecc_curve, this.ecc_point_g, this.ecc_n);
 
         ECKeyGenerationParameters ecc_ecgenparam;

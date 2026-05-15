@@ -1,5 +1,3 @@
-package org.example.test;
-
 import cn.hutool.core.util.HexUtil;
 
 import java.math.BigInteger;

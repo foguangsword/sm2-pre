@@ -7,6 +7,7 @@ import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.util.BigIntegers;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 @Slf4j
 public class Receiver {
@@ -33,7 +34,9 @@ public class Receiver {
         BigInteger C4s = reCapsule.getC4();
         ECPoint skBC1s = C1s.multiply(sk); //skB*C1'
         String h1_skBC1s = SmUtil.sm3(HexUtil.encodeHexStr(skBC1s.getEncoded(false)) + claim.toString()); // H1(skB*C1'||alpha)
-        BigInteger Ms = C2s.xor(new BigInteger(1, HexUtil.decodeHex(h1_skBC1s)));
+        byte[] tBytes = HexUtil.decodeHex(h1_skBC1s);
+        byte[] tTruncated = Arrays.copyOf(tBytes, 16);
+        BigInteger Ms = C2s.xor(new BigInteger(1, tTruncated));
 
         String h4_Ms_C1s_C3s = SmUtil.sm3( HexUtil.encodeHexStr(BigIntegers.asUnsignedByteArray(16, Ms))
                 + HexUtil.encodeHexStr(C1s.getEncoded(false))

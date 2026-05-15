@@ -1,7 +1,5 @@
 package org.example;
 
-import cn.hutool.json.JSONUtil;
-
 public class Claim {
 
     private String orderID;

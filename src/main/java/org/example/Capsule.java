@@ -55,7 +55,7 @@ public class Capsule {
 
     public String toString(){
         String C1Hex = HexUtil.encodeHexStr(C1.getEncoded(false));
-        String C2Hex = HexUtil.encodeHexStr(BigIntegers.asUnsignedByteArray(32, C2));
+        String C2Hex = HexUtil.encodeHexStr(BigIntegers.asUnsignedByteArray(16, C2));
         String C3Hex = HexUtil.encodeHexStr(BigIntegers.asUnsignedByteArray(32, C3));
         String C4Hex = HexUtil.encodeHexStr(BigIntegers.asUnsignedByteArray(32, C4));
         return C1Hex + C2Hex + C3Hex + C4Hex;

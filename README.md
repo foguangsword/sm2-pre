@@ -99,16 +99,17 @@ src/main/java/
 git clone https://github.com/<your-username>/sm2-pre.git
 cd sm2-pre
 mvn compile
-mvn exec:java -Dexec.mainClass="org.example.Test"
+mvn clean package
+java -cp "target/sm-1.0-SNAPSHOT.jar;target/lib/*" org.example.Test
 ```
 
 **依赖**（见 `pom.xml`）：
 
-| 依赖               | 版本    | 用途                      |
-| ------------------ | ------- | ------------------------- |
-| `bcprov-jdk15to18` | 1.69    | BouncyCastle，SM2/EC 运算 |
-| `hutool-all`       | 5.8.16  | SM3/SM4 封装              |
-| `lombok`           | 1.18.24 | 样板代码简化              |
+| 依赖                               | 版本    | 用途                      |
+| ---------------------------------- | ------- | ------------------------- |
+| `bcprov-jdk18on`, `bcpkix-jdk18on` | 1.84    | BouncyCastle，SM2/EC 运算 |
+| `hutool-all`                       | 5.8.16  | SM3/SM4 封装              |
+| `lombok`                           | 1.18.24 | 样板代码简化              |
 
 ------
 
@@ -221,7 +222,8 @@ PRE is used only to securely transfer a 128-bit symmetric key. Bulk data encrypt
 git clone https://github.com/<your-username>/sm2-pre.git
 cd sm2-pre
 mvn compile
-mvn exec:java -Dexec.mainClass="org.example.Test"
+mvn clean package
+java -cp "target/sm-1.0-SNAPSHOT.jar;target/lib/*" org.example.Test
 ```
 
 ------
