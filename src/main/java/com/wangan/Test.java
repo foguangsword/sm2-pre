@@ -1,4 +1,4 @@
-package org.example;
+package com.wangan;
 
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.HexUtil;

@@ -51,7 +51,7 @@ Decrypt_B(C', skB):
          = M   ✓
 ```
 
-完整正确性证明见 [PROOF.md](https://claude.ai/chat/PROOF.md)。
+
 
 ------
 
@@ -60,7 +60,7 @@ Decrypt_B(C', skB):
 ```
 Alice                       Proxy                        Bob
   │                           │                           │
-  │── enCapsulate(M) ────────►│  存储密文 C=(C1,C2,C3)    │
+  │── enCapsulate(M) ────────►│  存储密文 C=(C1,C2,C3,C4)    │
   │                           │                           │
   │── generateReKey(pkB) ────►│  验证授权参数 α            │
   │   rkAB, α                 │                           │
@@ -82,7 +82,7 @@ src/main/java/
 ├── SM2Curve.java          # SM2 国密曲线参数（p, a, b, n, Gx, Gy）
 ├── SM2KeyPair.java        # 密钥对封装
 ├── KeyGenerator.java      # 密钥对生成
-├── Capsule.java           # 密文封装（C1, C2, C3）
+├── Capsule.java           # 密文封装（C1, C2, C3, C4）
 ├── Sender.java            # 数据拥有者：加密、生成重加密密钥
 ├── Receiver.java          # 数据接收方：解密
 ├── Proxy.java             # 代理服务器：重加密转换
@@ -96,11 +96,12 @@ src/main/java/
 **环境要求**：JDK 8+，Maven 3.x
 
 ```bash
-git clone https://github.com/<your-username>/sm2-pre.git
+git clone https://github.com/foguangsword/sm2-pre.git
 cd sm2-pre
 mvn compile
 mvn clean package
-java -cp "target/sm-1.0-SNAPSHOT.jar;target/lib/*" org.example.Test
+java -cp "target/sm-1.0-SNAPSHOT.jar;target/lib/*" com.wangan.Test # Windows
+java -cp "target/sm-1.0-SNAPSHOT.jar:target/lib/*" com.wangan.Test # Linux/Mac
 ```
 
 **依赖**（见 `pom.xml`）：
@@ -111,16 +112,7 @@ java -cp "target/sm-1.0-SNAPSHOT.jar;target/lib/*" org.example.Test
 | `hutool-all`                       | 5.8.16  | SM3/SM4 封装              |
 | `lombok`                           | 1.18.24 | 样板代码简化              |
 
-------
 
-### 预期输出
-
-```
-[INFO] 对称密钥原文hex       : e48c1582d860fcc7a9059917ca39f4ec
-[INFO] 一重加密解密           : e48c1582d860fcc7a9059917ca39f4ec   ✓
-[INFO] 接收方解密，得到对称密钥 : e48c1582d860fcc7a9059917ca39f4ec   ✓
-[INFO] SM4解密明文            : 闪电贷是一种关于DeFi无抵押贷款的新思路……        ✓
-```
 
 ------
 
@@ -128,11 +120,11 @@ java -cp "target/sm-1.0-SNAPSHOT.jar;target/lib/*" org.example.Test
 
 本项目以下几点在生产场景中需要进一步处理：
 
-| 问题                       | 说明                                                       |
-| -------------------------- | ---------------------------------------------------------- |
-| ~~无 C3/C4 完整性校验~~    | ~~当前实现省略了密文完整性验证字段，生产环境应补充~~       |
-| ~~`α` 授权参数为简化实现~~ | ~~当前为占位符，完整方案应使用 `Sign_skA(pkB ‖ orderId)`~~ |
-| 不支持变长明文             | 设计上仅用于固定长度对称密钥的安全传输                     |
+| 问题                       | 说明                                                         |
+| -------------------------- | ------------------------------------------------------------ |
+| ~~无 C3/C4 完整性校验~~    | 已解决 ~~当前实现省略了密文完整性验证字段，生产环境应补充~~  |
+| ~~`α` 授权参数为简化实现~~ | 已解决 ~~当前为占位符，完整方案应使用 `Sign_skA(pkB ‖ orderId)`~~ |
+| 不支持变长明文             | 设计上仅用于固定长度对称密钥的安全传输                       |
 
 ------
 
@@ -200,7 +192,7 @@ Note: `skB · C1 = skB · r · P = r · skB · P = r · pkB`, so Bob can indepen
 
 ```
 Sender (Alice)
-  enCapsulate(M)    → Capsule C = (C1, C2, C3)  →  Proxy stores C
+  enCapsulate(M)    → Capsule C = (C1, C2, C3, C4)  →  Proxy stores C
   generateReKey(pkB) → rkAB, α                  →  Proxy receives rkAB
 
 Proxy
@@ -219,11 +211,12 @@ PRE is used only to securely transfer a 128-bit symmetric key. Bulk data encrypt
 **Requirements**: JDK 8+, Maven 3.x
 
 ```bash
-git clone https://github.com/<your-username>/sm2-pre.git
+git clone https://github.com/foguangsword/sm2-pre.git
 cd sm2-pre
 mvn compile
 mvn clean package
-java -cp "target/sm-1.0-SNAPSHOT.jar;target/lib/*" org.example.Test
+java -cp "target/sm-1.0-SNAPSHOT.jar;target/lib/*" com.wangan.Test # Windows
+java -cp "target/sm-1.0-SNAPSHOT.jar:target/lib/*" com.wangan.Test # Linux/Mac
 ```
 
 ------
@@ -232,8 +225,8 @@ java -cp "target/sm-1.0-SNAPSHOT.jar;target/lib/*" org.example.Test
 
 | Issue                        | Note                                                         |
 | ---------------------------- | ------------------------------------------------------------ |
-| ~~No C3/C4 integrity check~~ | ~~Omitted for simplicity; should be added for production use~~ |
-| ~~`α` is a placeholder~~     | ~~Full scheme requires `Sign_skA(pkB ‖ orderId)`~~           |
+| ~~No C3/C4 integrity check~~ | fixed ~~Omitted for simplicity; should be added for production use~~ |
+| ~~`α` is a placeholder~~     | fixed ~~Full scheme requires `Sign_skA(pkB ‖ orderId)`~~     |
 | Fixed-length plaintext only  | Designed for symmetric key transport, not arbitrary messages |
 
 ------

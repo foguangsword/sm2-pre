@@ -15,16 +15,6 @@
     </properties>
 
     <dependencies>
-        <!--<dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcpkix-jdk15to18</artifactId>
-            <version>1.63</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15to18</artifactId>
-            <version>1.63</version>
-        </dependency>-->
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk18on</artifactId>
@@ -67,7 +57,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.example.Test</mainClass>
+                            <mainClass>com.wangan.Test</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
